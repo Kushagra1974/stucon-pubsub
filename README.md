@@ -11,6 +11,6 @@ It's a chat app where users can send messages to friends in real-time. It's also
 ##### User-online,user-typing
 ##### Send connection request, Receive connection request.
 ##### Upload papers, View papers.
-Please visit my web app 😊 . Enter dummy data to test it . To test real-time communication open this link in two browsers.
+Please visit my web app 😊 . Enter dummy data to test it. To test real-time communication open this link in two different browsers and log in as two different users.
 
 ## [link to the website click me 🚀](https://stucon.onrender.com/) 
