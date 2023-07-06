@@ -3,7 +3,7 @@ Backend code for the Stucon app
 This is a web app that enables students to connect with each other while taking care of their privacy.
 It's a chat app where users can send messages to friends in real-time. It's also a repository for the previous year's question paper.
 
-### Backend Stack Tech used Node, Express, MongoDB, and Socket.IO 
+### Backend Tech Stack used Node, Express, MongoDB, and Socket.IO 
 #### Visit StuCon-client for Frontend code [Click Me 🚀](https://github.com/Kushagra1974/Stucon-client).
 #### Features:- 
 ##### Real-time messages 
