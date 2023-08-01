@@ -30,7 +30,7 @@ friendRouter.route("/get-friend-request/:userId").get(async (req, res) => {
         const users = await ConnectionRequest.find({ friend: userId }).populate({ path: 'user', select: 'userName educationInstitute employer' }).select('user')
         const sendData = [];
 
-        console.log(userId, users);
+        // console.log(userId, users);
 
         if (users) {
             users.forEach(({ user }) => sendData.push({ _id: user._id, userName: user.userName, employer: user.employer, educationInstitute: user.educationInstitute }))
@@ -93,7 +93,7 @@ friendRouter.route("/get-user-with-unread-messages/:userId").get(async (req, res
             if (users.length > 0) count++;
         })
         res.status(200).json(count);
-        console.log(96, count);
+        // console.log(96, count);
 
     } catch (err) {
         res.status(500).json("Server Error")
@@ -141,7 +141,7 @@ friendRouter.route("/find-friends/:keyword/:userId").get(async (req, res) => {
 
         const filterUsers = [];
 
-        console.log(filterUserFriends, allUsers);
+        // console.log(filterUserFriends, allUsers);
 
         while (frndsIdx < frndsLength && frndsIdx >= 0 && userIdx >= 0 && userIdx < userLength) {
             const currentUser = allUsers[userIdx];

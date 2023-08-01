@@ -4,6 +4,18 @@ import { Hash } from "../classes/Helper.js";
 
 import { db } from "../classes/Config.js";
 
+
+export const isValidObjectId = (id) => {
+
+    const ObjectId = mongoose.Types.ObjectId
+    if (ObjectId.isValid(id)) {
+        if ((String)(new ObjectId(id)) === id)
+            return true;
+        return false;
+    }
+    return false;
+}
+
 const userSchema = mongoose.Schema({
     userName: {
         type: String, required: true

@@ -18,7 +18,7 @@ userRouter.route("/get-all-user").get(async (req, res) => {
 userRouter.route("/get-user-name/:userId").get(async (req, res) => {
 
     const userId = req.params.userId;
-    console.log(1, { userId });
+    // console.log(1, { userId });
     try {
         const userName = await User.findById(userId).select("userName");
         res.status(200).json(userName)

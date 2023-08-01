@@ -29,7 +29,7 @@ uploadRouter.post("/:userId", verifyToken, upload.array("file"), async (req, res
         const newGLobalNoti = new GlobalNotification({ user: userId, type: "FILE_UPLOAD" })
         await newGLobalNoti.save()
         res.status(201).json({ message: "file uploded sucessfully ", urls: urlPromises })
-        console.log(urlPromises)
+        // console.log(urlPromises)
     } catch (err) {
         console.log(err)
         res.status(500).json("Server Error")

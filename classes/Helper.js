@@ -34,7 +34,7 @@ class Token {
             return { data: decodedData.userId, error: null };
         } catch (err) {
             console.error(err);
-            return { data: null, error: err.message };
+            return { data: null, error: err };
         }
     }
 }
