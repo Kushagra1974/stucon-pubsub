@@ -1,6 +1,5 @@
 import { isValidObjectId, Message, Connection, ConnectionRequest, UserNotification } from '../modles/Schema.js';
-import { messagesCategory, serverSyncPublisher, serverSyncSubscriber } from "../classes/Redis.js"
-
+import { messagesCategory, serverSyncPublisher, serverSyncSubscriber } from "../index.js"
 
 serverSyncSubscriber(({ message, payload }) => {
     switch (message) {
@@ -93,7 +92,7 @@ class WebSocket {
 
     static notifyOnlineFriendOfUser = async (userId, isConnected) => {
         if (userId === "") {
-            // console.log("User Id Is Missing");
+            console.log("User Id Is Missing");
             return;
         }
         let userFrnds = [];
@@ -210,8 +209,9 @@ class WebSocket {
                 const userNotify = await UserNotification.findById(newuserNotifi._id).populate({ path: "friend", select: "userName email educationInstitute employer" }).select('friend type createdAt')
                 WebSocket.emitDataToRoom({ roomId: friendId, data: userNotify, eventName: "update-local-notification" })
                 //* publish to redis
-                if (!WebSocket.roomExists(friendId))
+                if (!WebSocket.roomExists(friendId)) {
                     serverSyncPublisher({ message: messagesCategory.CONNECTION_REQ_ACC, payload: { receiver: friendId, data: userNotify, evenName: "update-local-notification" } })
+                }
             }
         } catch (err) {
             console.log(err)
@@ -254,8 +254,9 @@ class WebSocket {
                 WebSocket.emitDataToRoom({ roomId: friendSocketId, eventName: "recieve-message", data: { ...savedMsg._doc, type: "received" } })
 
                 //* publish to redis
-                if (!WebSocket.roomExists(friendSocketId))
+                if (!WebSocket.roomExists(friendSocketId)) {
                     serverSyncPublisher({ message: messagesCategory.SEND_PERSONAL_MESSAGE, payload: { receiver: friendSocketId, event: "recieve-message", data: { ...savedMsg._doc, type: "received" } } })
+                }
                 const friends = await Connection.find({ user: userId }).populate({ path: 'friend', select: 'userName email educationInstitute employer' }).select('friend')
                 const idArray = [];
                 friends.forEach((user) => {
@@ -274,8 +275,9 @@ class WebSocket {
                 WebSocket.emitDataToRoom({ roomId: friendSocketId, eventName: "update-message-notification", data: count })
 
                 //* publis to redis
-                if (!WebSocket.roomExists(friendSocketId))
+                if (!WebSocket.roomExists(friendSocketId)) {
                     serverSyncPublisher({ message: messagesCategory.UPDATE_MESSAGE_COUNT, payload: { receiver: friendSocketId, eventName: "update-message-notification", data: count } })
+                }
             }
             if (data?.sender) {
                 WebSocket.emitDataToRoom({ roomId: data.sender, data: { ...savedMsg._doc, type: "send" }, eventName: "recieve-message" })
@@ -300,9 +302,9 @@ class WebSocket {
             const unreadMessagesCount = receivedMessages.length;
             WebSocket.emitDataToRoom({ eventName: "update-unread-messages", data: { unreadMessagesCount, userId: friendId, receivedMessages }, roomId: userId })
             //* publis to redis
-            if (!WebSocket.roomExists(userId))
+            if (!WebSocket.roomExists(userId)) {
                 serverSyncPublisher({ message: messagesCategory.MESSAGE_READ, payload: { data: { unreadMessagesCount, userId: friendId, receivedMessages }, receiver: userId, eventName: "update-unread-messages" } })
-
+            }
             const friends = await Connection.find({ user: userId }).populate({ path: 'friend', select: 'userName email educationInstitute employer' }).select('friend')
             const idArray = [];
             friends.forEach((user) => {
